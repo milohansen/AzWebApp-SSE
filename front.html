@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Simple SSE Test</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      const events = new EventSource(window.location.origin + "/sse");
+
+      events.addEventListener("message", ev => {
+        console.log("onmessage", ev);
+
+        document.getElementById("greetings").textContent = ev.data;
+      });
+    </script>
+
+    <h1>Simple SSE Test</h1>
+    <h3 id="greetings">greetings</h3>
+    <button onclick="events.close()">Bye!</button>
+  </body>
+</html>
