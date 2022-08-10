@@ -46,16 +46,9 @@ function sseHandler(req, res) {
 
 console.log("creating server");
 const indexFile = fs.readFileSync(path.join(__dirname, "/front.html"));
-const configJsFile = fs.readFileSync(path.join(__dirname, "/config.js"));
 
 const server = createServer((req, res) => {
   console.log("req", req.url);
-  if (req.url === "/config.js") {
-    res.setHeader("Content-Type", "application/json");
-    res.writeHead(200);
-    res.end(configJsFile);
-    return;
-  }
   if (req.url === "/sse") {
     sseHandler(req, res);
   } else if (req.url === "/" && req.method === "GET") {
