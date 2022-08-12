@@ -6,17 +6,42 @@
   </head>
   <body>
     <script type="text/javascript">
-      const events = new EventSource(window.location.origin + "/sse");
+      let events;
 
-      events.addEventListener("message", ev => {
-        console.log("onmessage", ev);
+      function connect() {
+        events = new EventSource(window.location.origin + "/sse");
+        const element = document.createElement("li");
+        element.textContent = "Connection opened";
+        document.getElementById("greetings").appendChild(element);
 
-        document.getElementById("greetings").textContent = ev.data;
-      });
+        events.addEventListener("message", (ev) => {
+          // console.log("onmessage", ev);
+
+          const element = document.createElement("div");
+          element.textContent = "recieved " + ev.data;
+          document.getElementById("greetings").appendChild(element);
+        });
+
+        document.getElementById("connect").disabled = true;
+        document.getElementById("disconnect").disabled = false;
+      }
+
+      function disconnect() {
+        events.close();
+
+        const element = document.createElement("li");
+        element.textContent = "Connection Closed";
+        document.getElementById("greetings").appendChild(element);
+
+        document.getElementById("connect").disabled = false;
+        document.getElementById("disconnect").disabled = true;
+      }
     </script>
 
     <h1>Simple SSE Test</h1>
-    <h3 id="greetings">greetings</h3>
-    <button onclick="events.close()">Bye!</button>
+    <button id="connect" onclick="connect()">Connect</button>
+    <button id="disconnect" onclick="disconnect()" disabled>Disconnect</button>
+
+    <pre id="greetings"></pre>
   </body>
 </html>
