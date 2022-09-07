@@ -12,7 +12,7 @@ function makeId() {
 async function sendGreetings(client) {
   const his = ["Hi", "Bonjour", "Hola", "Ciao", "Zdravo"];
   let i = 0;
-  while (!client.res.destroyed) {
+  while (!client.req.aborted) {
     client.res.write(`id: ${makeId()}\ndata: ${his[i]}\n\n`);
     console.log("sending", his[i]);
     i = (i + 1) % 5;
